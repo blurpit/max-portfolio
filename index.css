@@ -17,26 +17,33 @@ body {
 
 h1 {
     margin-top: 0;
-    font-size: 40pt;
+    font-size: 46pt;
     font-weight: 700;
 
     color: white;
-    text-shadow: 5px 5px black;
+    text-shadow: 6px 6px black;
+    filter: drop-shadow(2px 2px 5px rgba(0, 0, 0, 0.4));
 }
 
 h2 {
-    font-size: 28pt;
+    font-size: 32pt;
     font-weight: 700;
+
+    color: #fff;
+    text-shadow: 5px 5px black;
+    filter: drop-shadow(2px 2px 5px rgba(0, 0, 0, 0.4));
 }
 
 ul {
     /* Fixes bullets with float-left images for some reason. CSS moment */
     overflow: hidden;
+    font-size: 22pt;
 }
 
 hr {
     margin-top: 0;
     opacity: 1;
+    border-top: 2px solid;
 }
 
 #wheel {
@@ -87,6 +94,7 @@ hr {
 .white,
 .white .figure-caption {
     color: white;
+    /* text-shadow: 1px 1px 3px rgba(0, 0, 0, 1); */
 }
 
 /* content specific styles */
