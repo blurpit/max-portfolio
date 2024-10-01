@@ -53,7 +53,154 @@
             <!-- Slice 3: Stylophone Player -->
             <div class="container-fluid" id="content-2">
                 <h1>Stylophone Player</h1>
-                <p>Under construction.</p>
+                <p>Summer 2024</p>
+                <img
+                    src="img/3-M.jpg"
+                    class="float-start me-3 mb-2"
+                    width="60%"
+                    style="min-width: 300px; max-width: 450px"
+                />
+                <h2>Crafting a Cartesian Motion Creation</h2>
+                <ul>
+                    <li>Solidworks</li>
+                    <li>Arduino</li>
+                    <li>Modular Component Design</li>
+                </ul>
+                <hr />
+                <p>
+                    During a product design course I took in Summer 2024, I was tasked with
+                    designing a 3D Printed, custom designed device that has 2.5 degrees of movement
+                    freedom. My team of three quickly determined that we wanted to create a device
+                    that could play a musical instrument known as a "Stylophone". The stylophone is
+                    a small piano-like device that uses a pen with a metal tip, wired to the
+                    Stylophone, to play electronic notes. We concluded that the pen already being
+                    part of the Stylophone would ensure that it would work well as long as we could
+                    get it to move around correctly, and that making a device that could play a
+                    physical instrument just sounded like fun. We first sketched what a singular,
+                    modular linear actuator would look like, primarily to get measurements down.
+                    Then, we created a sketch of what we envisioned the entire unit to look like,
+                    making sure to add some extra supports so the unit could remain stable.
+                </p>
+                <div class="m-auto mb-3 d-flex justify-content-center w-100">
+                    <img src="img/3-2.png" class="pe-1" width="50%" style="max-width: 400px" />
+                    <img src="img/3-3.png" class="ps-1" width="50%" style="max-width: 400px" />
+                </div>
+                <div class="float-end ms-3 mb-2" style="width: 250px">
+                    <img src="img/3-4.png" class="d-block mb-2" width="100%" />
+                    <img src="img/3-5.jpg" class="d-block" width="100%" />
+                </div>
+                <p>
+                    Our next goal was to perfect a single linear actuator that would then be
+                    replicated to create the three actuators of the final device. Our first
+                    iteration functioned fine but would go through numerous iterations, whether that
+                    be due to changing the rod thickness, adjusting the heights of the two ends, or
+                    accounting for how everything needed to connect to one another. Each group
+                    member designed a component for this stage, with my component being the
+                    carriage. The biggest hurdle was designing the "teeth" that would allow it to
+                    connect to the belt. After a long period of time designing in Solidworks and a
+                    quick 3D print, I verified that the belt fit into the teeth perfectly. When I
+                    was designing the carriage, I made it as basic as possible intentionally since I
+                    knew that even once I got one that simply "worked", I was going to have to
+                    iterate it continuously to fit within the other components around it changing.
+                    This paid off, since I ended up creating about ten separate versions of the
+                    carriage during our ideation process, most of which added on to prior versions,
+                    although some had components removed, which was also made easier by the more
+                    straightforward design.
+                </p>
+                <div class="float-start me-3 mb-2" style="width: 250px">
+                    <img src="img/3-6.png" class="d-block mb-2" width="100%" />
+                    <img src="img/3-7.png" class="d-block" width="100%" />
+                </div>
+                <p>
+                    After we ideated upon the actuator multiple times, we eventually came to a
+                    design that we liked that would be able to work for all of the required
+                    functions. Once we assembled the "frame", we knew it was time to make a
+                    component that could hold the Arduino, and a component that could hold the
+                    Stylophone. I ended up designing these, and took a similar approach to both. The
+                    major change I had to make for the Stylophone version was how I printed it, as
+                    it was slightly too large to fit on the print bed. To remedy this, I cut the
+                    unit in half and printed each half separately, and we just made sure to lock it
+                    in place in the device so that the different halves were unnoticeable.
+                </p>
+                <div class="float-end ms-3 mb-2" style="width: 275px">
+                    <img src="img/3-8.jpg" class="d-block mb-2" width="100%" />
+                    <img src="img/3-9.png" class="d-block" width="100%" />
+                </div>
+                <div class="w-0 float-start" style="height: 300px"></div>
+                <img
+                    src="img/3-10.jpg"
+                    class="float-start mb-2 me-3"
+                    width="250px"
+                    style="clear: left"
+                />
+                <p>
+                    At this point, we had a near final design but there were two critical issues
+                    that we needed to address. Firstly, the Arduino code was just not working. We
+                    were usually able to move some part of the device, but never in the way we
+                    wanted it to. This would result in multiple meetings dedicated to just working
+                    through the code, bouncing ideas off of each other, and slowly but surely moving
+                    towards the Stylophone Player, well, playing the Stylophone. The other issue was
+                    the Stylophone pen, which was using both an extended tip and hot glue tread for
+                    the motor to latch onto to enable it to move up and down. This initially seemed
+                    to work, but we quickly realized that this either didn't latch on in the first
+                    place, or slowly degraded over time. We continued to recreate the hot glue
+                    tread, but time and time again, it would quickly fail. After a while, we
+                    realized that we needed something that would be consistent. We realized that
+                    since the belt moved perfectly along the motor, that means if we re-created the
+                    teeth from the carriage, it should fit. I was tasked with creating this new
+                    extension, since I had the most knowledge regarding the teeth, but it was still
+                    a difficult task, as I didn't have the CAD sketch anymore that I used for the
+                    carriage, so I had to recreate them from scratch. After a thankfully shorter
+                    process than the initial teeth, I managed to make a new extension piece that
+                    worked perfectly.
+                </p>
+                <img src="img/3-11.jpg" class="float-end ms-3 mb-2" width="500px" />
+                <p>
+                    With this, the hardware of the Stylophone Player was complete. We first had it
+                    play a "chromatic scale", or a scale that just plays every note in order. This
+                    took a lot more trial and error than expected, as we learned that when variables
+                    such as speed changed, the device would become less precise and in turn, hit the
+                    wrong keys. Eventually, we fixed this simply by "honing in" on coordinates that
+                    would work no matter the speed. We then programmed in "The Imperial March" from
+                    the Star Wars franchise. When making the code, we designed it so that once we
+                    determined the correct coordinates, we could just enter the notes we wanted to
+                    play, and it should play them in that order. At this point, we encountered an
+                    odd error involving the pen pushing too hard down on the Stylophone, but just
+                    for the first note. We eventually figured out it was determining the
+                    Z-coordinates (how high up it was) incorrectly and that we had basically just
+                    gotten lucky for the chromatic scale, so we fixed this for both songs.
+                </p>
+                <p>
+                    I am happy with how this project turned out and would consider it a success. We
+                    set out to create a device that could play a Stylophone by itself, and we
+                    accomplished exactly that. I learned a lot of valuable lessons from this
+                    project, especially since it was incredibly involved and hands on. I improved my
+                    CAD/Solidworks workflow, gained a much better understanding of electronic wiring
+                    and Arduino, further understood the strengths and limits of 3D printing, and
+                    improved my modular design thinking, both in how to apply it, but also when to
+                    use it. I also now have a better understanding of the time, resources, and
+                    skills that go into creating a project of this caliber and scale.
+                </p>
+                <div class="m-auto mb-3 d-flex justify-content-center w-100">
+                    <iframe
+                        class="yt-video w-50 pe-1"
+                        src="https://www.youtube.com/embed/UAFwxsQSGyI?si=tLW0jsJQg1eKq1sx"
+                        title="YouTube video player"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin"
+                        allowfullscreen
+                    ></iframe>
+                    <iframe
+                        class="yt-video w-50 ps-1"
+                        src="https://www.youtube.com/embed/yrlhCtsXo_0?si=oVWf0Kq9hrctBfzd"
+                        title="YouTube video player"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin"
+                        allowfullscreen
+                    ></iframe>
+                </div>
             </div>
 
             <!-- Slice 4: Solar Display -->
