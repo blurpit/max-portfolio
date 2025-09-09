@@ -81,6 +81,8 @@ hr {
     max-height: calc(100% - 225px);
     overflow-y: auto;
     overflow-x: hidden;
+
+    will-change: transform, opacity;
 }
 #content-container img {
     border-radius: 10px;

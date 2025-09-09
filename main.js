@@ -71,6 +71,7 @@ class Projector {
         // useful stuff
         this.radius = 0;
         this.rotation = 0;
+        this.progress = 100;
 
         // create sections
         this.sections = [];
@@ -89,17 +90,53 @@ class Projector {
         }
     }
 
-    redraw() {
+    requestDraw() {
         window.requestAnimationFrame(() => this.draw());
     }
 
-    draw() {
-        const drawDist = 1;
-        let index = this.wheel.selectedIndex - drawDist;
-        if (index < 0) index += this.sections.length;
+    draw(direction = 1) {
+        const numSections = this.sections.length;
 
-        for (let i = 0; i < drawDist * 2 + 1; i++) {
-            this.sections[(index + i) % this.sections.length].draw();
+        // Clear canvas
+        const width = this.ctx.canvas.width;
+        const height = this.ctx.canvas.height;
+        this.ctx.clearRect(0, 0, width, height);
+
+        const index = this.wheel.selectedIndex;
+        const prevIndex = (index - direction + numSections) % numSections;
+        const prevPrevIndex = (index - 2 * direction + numSections) % numSections;
+        const nextIndex = (index + direction + numSections) % numSections;
+
+        // draw left and right halves of the background
+        // t = 0   -> left prevprev right current
+        // t = 0.3 -> entirely current
+        // t = 0.7 -> left prev right next
+        let left, right;
+        if (this.progress < 30) {
+            left = prevPrevIndex;
+            right = index;
+        } else if (this.progress < 70) {
+            left = index;
+            right = index;
+        } else {
+            left = prevIndex;
+            right = nextIndex;
+        }
+        if (direction == -1) {
+            // swap left and right if rotating back
+            [left, right] = [right, left];
+        }
+
+        this.ctx.fillStyle = this.wheel.config.sectionColors[left];
+        this.ctx.fillRect(0, 0, width / 2, height);
+        this.ctx.fillStyle = this.wheel.config.sectionColors[right];
+        this.ctx.fillRect(width / 2, 0, width / 2, height);
+
+        // Draw slice
+        if (this.progress < 70) {
+            this.sections[prevIndex].draw();
+        } else {
+            this.sections[index].draw();
         }
     }
 
@@ -107,20 +144,20 @@ class Projector {
         this.ctx.canvas.width = window.innerWidth;
         this.ctx.canvas.height = window.innerHeight;
 
-        this.redraw();
+        this.requestDraw();
     }
 
     animateRotation(oldIndex, newIndex, oldRot, newRot) {
+        const direction = newRot > oldRot ? 1 : -1;
+
         anime({
             targets: this,
             rotation: [oldRot, newRot],
+            progress: [0, 100],
             duration: 1300,
-            update: () => {
-                this.redraw();
-            },
+            update: () => this.draw(direction),
         });
 
-        let direction = newRot > oldRot ? 1 : -1;
         this.sections[oldIndex].animateOut(direction);
         this.sections[newIndex].animateIn(direction);
     }
