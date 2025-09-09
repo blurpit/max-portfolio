@@ -230,8 +230,8 @@ class ContentSection {
 
     draw() {
         let rot = this.wheel.getRotation(this.i) - this.proj.rotation;
-        let startAngle = rot - this.wheel.angularSectionWidth / 2 - Math.PI / 2;
-        let endAngle = startAngle + this.wheel.angularSectionWidth;
+        let startAngle = rot - this.wheel.config.projectorAngularSectionWidth / 2 - Math.PI / 2;
+        let endAngle = startAngle + this.wheel.config.projectorAngularSectionWidth;
 
         let width = this.ctx.canvas.width;
         let height = this.ctx.canvas.height;
@@ -265,7 +265,7 @@ document.addEventListener(
     function () {
         const wheel = new Wheel({
             // Wheel section config
-            numSections: 7,
+            numSections: 9,
             sectionColors: [
                 "#B7B7B7",
                 "#FF3232",
@@ -274,7 +274,10 @@ document.addEventListener(
                 "#71FF83",
                 "#6379FF",
                 "#9663FF",
+                "#FF63E9",
+                "#FF6380",
             ],
+            projectorAngularSectionWidth: (2 * Math.PI) / 7,
 
             // Wheel controls
             // false: scroll down = rotate CCW
