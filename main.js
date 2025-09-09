@@ -345,6 +345,12 @@ document.addEventListener(
 
         // password protect content 2
         document.getElementById("pwd-form").onsubmit = submitPassword;
+        // next buttons
+        document.querySelectorAll(".next-btn").forEach((btn) => {
+            btn.addEventListener("click", () => {
+                wheel.rotateSections(1);
+            });
+        });
     },
     false
 );
