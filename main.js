@@ -281,7 +281,7 @@ document.addEventListener(
             invertScroll: false,
 
             // Time (ms) to lock controls after a rotation
-            controlLockDuration: 0,
+            controlLockDuration: 500,
 
             // Animation
             animEasing: "outElastic(1, 0.5)",
