@@ -60,10 +60,11 @@ class Wheel {
         if (newRot - oldRot > Math.PI) oldRot += Math.PI * 2;
         else if (oldRot - newRot > Math.PI) newRot += Math.PI * 2;
 
-        if (this.anim) this.anim.pause();
-        this.anim = anime({
-            targets: this.img,
+        if (this.anim) this.anim.cancel();
+        this.anim = animate(this.img, {
             rotate: [360 - degrees(oldRot), 360 - degrees(newRot)],
+            duration: this.config.animWheelDuration,
+            ease: this.config.animEasing,
         });
         this.projector.animateRotation(oldIndex, index, oldRot, newRot);
     }
@@ -169,14 +170,14 @@ class Projector {
     animateRotation(oldIndex, newIndex, oldRot, newRot) {
         const direction = newRot > oldRot ? 1 : -1;
 
-        if (this.anim) this.anim.pause();
-        this.anim = anime({
-            targets: this,
+        if (this.anim) this.anim.cancel();
+        this.anim = animate(this, {
             rotation: [oldRot, newRot],
             progress: [0, 100],
-            duration: 1300,
-            update: () => this.draw(direction),
-            // easing: "linear",
+            duration: this.wheel.config.animProjectorDuration,
+            onUpdate: () => this.draw(direction),
+            ease: this.wheel.config.animEasing,
+            // ease: "linear",
         });
 
         this.sections[oldIndex].animateOut(direction);
@@ -200,29 +201,29 @@ class ContentSection {
     }
 
     animateIn(direction) {
-        if (this.anim) this.anim.pause();
+        if (this.anim) this.anim.cancel();
 
         if (this.content) {
             this.content.classList.remove("d-none");
-            this.anim = anime({
-                targets: this.content,
+            this.anim = animate(this.content, {
                 translateX: [1000 * direction, 0],
                 opacity: [0, 1],
-                duration: 1300,
+                duration: this.wheel.config.animProjectorDuration,
+                ease: this.wheel.config.animEasing,
             });
         }
     }
 
     animateOut(direction) {
-        if (this.anim) this.anim.pause();
+        if (this.anim) this.anim.cancel();
 
         if (this.content) {
-            this.anim = anime({
-                targets: this.content,
+            this.anim = animate(this.content, {
                 translateX: [0, -1000 * direction],
                 opacity: [1, 0],
-                duration: 1300,
-                complete: () => this.content.classList.add("d-none"),
+                duration: this.wheel.config.animProjectorDuration,
+                ease: this.wheel.config.animEasing,
+                onComplete: () => this.content.classList.add("d-none"),
             });
         }
     }
@@ -280,7 +281,12 @@ document.addEventListener(
             invertScroll: false,
 
             // Time (ms) to lock controls after a rotation
-            controlLockDuration: 500,
+            controlLockDuration: 0,
+
+            // Animation
+            animEasing: "outElastic(1, 0.5)",
+            animWheelDuration: 1000,
+            animProjectorDuration: 1300,
         });
 
         new Projector(wheel);
