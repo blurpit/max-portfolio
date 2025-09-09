@@ -6,10 +6,14 @@ class Wheel {
 
         this.angularSectionWidth = (2 * Math.PI) / this.config.numSections;
         this.selectedIndex = 0;
+
+        this.lockControls = false;
     }
 
     createAnimations() {
         document.onclick = (e) => {
+            if (this.lockControls) return;
+
             let content = document.getElementById("content-" + this.selectedIndex);
             if (!content || !content.contains(e.target)) {
                 let delta = e.x < window.innerWidth / 2 ? -1 : 1;
@@ -17,6 +21,8 @@ class Wheel {
             }
         };
         document.onwheel = (e) => {
+            if (this.lockControls) return;
+
             let content = document.getElementById("content-" + this.selectedIndex);
             if (!content || !content.contains(e.target)) {
                 if (e.deltaY !== 0) {
@@ -27,12 +33,20 @@ class Wheel {
             }
         };
         document.onkeydown = (e) => {
+            if (this.lockControls) return;
+
             if (e.key === "ArrowLeft") this.rotateSectionsBy(-1);
             else if (e.key === "ArrowRight") this.rotateSectionsBy(1);
         };
     }
 
     rotateToSection(index) {
+        // Prevent fast rotations
+        this.lockControls = true;
+        setTimeout(() => {
+            this.lockControls = false;
+        }, this.config.controlLockDuration);
+
         let oldIndex = this.selectedIndex;
         let oldRot = this.getRotation(oldIndex);
         let newRot = this.getRotation(index);
@@ -265,6 +279,9 @@ document.addEventListener(
             // Wheel controls
             // false: scroll down = rotate CCW
             invertScroll: false,
+
+            // Time (ms) to lock controls after a rotation
+            controlLockDuration: 1300,
         });
 
         const projector = new Projector(wheel);
