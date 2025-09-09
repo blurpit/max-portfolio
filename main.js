@@ -281,7 +281,7 @@ document.addEventListener(
             invertScroll: false,
 
             // Time (ms) to lock controls after a rotation
-            controlLockDuration: 1300,
+            controlLockDuration: 500,
         });
 
         const projector = new Projector(wheel);
