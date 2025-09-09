@@ -293,6 +293,18 @@ function radians(degrees) {
     return (degrees * Math.PI) / 180.0;
 }
 
+function submitPassword(e) {
+    e.preventDefault();
+    const input = document.getElementById("pwd-input");
+
+    if (input.value === "ModernOverMike1930?") {
+        document.getElementById("content-2-pwd").classList.add("d-none");
+        document.getElementById("content-2-body").classList.remove("d-none");
+    } else {
+        input.value = "";
+    }
+}
+
 document.addEventListener(
     "DOMContentLoaded",
     function () {
@@ -330,6 +342,9 @@ document.addEventListener(
 
         new Projector(wheel);
         wheel.createControls();
+
+        // password protect content 2
+        document.getElementById("pwd-form").onsubmit = submitPassword;
     },
     false
 );
