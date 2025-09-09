@@ -64,6 +64,18 @@ hr {
     z-index: -10;
 }
 
+#vignette {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: calc(100% - 40px);
+    height: calc(100% - 60px);
+    box-shadow: 0 0 150px rgba(0, 0, 0, 0.5) inset;
+    border-radius: 20px;
+    pointer-events: none;
+    z-index: -9;
+}
+
 #content-container {
     position: absolute;
     box-sizing: border-box;
