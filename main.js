@@ -5,11 +5,15 @@ class Wheel {
         this.projector = null;
 
         this.angularSectionWidth = (2 * Math.PI) / this.config.numSections;
-        this.selectedIndex = 0;
+        this.selectedIndex = this.config.startingIndex || 0;
+        this.lockControls = false;
 
         this.anim = null;
 
-        this.lockControls = false;
+        // Set initial rotation
+        this.img.style.transform = `rotate(${
+            360 - degrees(this.getRotation(this.selectedIndex))
+        }deg)`;
     }
 
     createControls() {
@@ -89,7 +93,7 @@ class Projector {
         this.container = document.getElementById("content-container");
 
         // Animation stuff
-        this.rotation = 0;
+        this.rotation = this.wheel.getRotation(this.wheel.selectedIndex);
         this.progress = 100;
         this.anim = null;
 
@@ -194,7 +198,7 @@ class ContentSection {
         this.anim = null;
 
         this.content = document.getElementById("content-" + i);
-        if (this.content && i > 0) {
+        if (this.content && i != this.wheel.selectedIndex) {
             this.content.style.opacity = "0";
             this.content.classList.add("d-none");
         }
@@ -282,6 +286,7 @@ document.addEventListener(
             // Wheel controls
             // false: scroll down = rotate CCW
             invertScroll: false,
+            startingIndex: 0,
 
             // Time (ms) to lock controls after a rotation
             controlLockDuration: 500,
