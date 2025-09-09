@@ -7,10 +7,12 @@ class Wheel {
         this.angularSectionWidth = (2 * Math.PI) / this.config.numSections;
         this.selectedIndex = 0;
 
+        this.anim = null;
+
         this.lockControls = false;
     }
 
-    createAnimations() {
+    createControls() {
         document.onclick = (e) => {
             if (this.lockControls) return;
 
@@ -42,10 +44,12 @@ class Wheel {
 
     rotateToSection(index) {
         // Prevent fast rotations
-        this.lockControls = true;
-        setTimeout(() => {
-            this.lockControls = false;
-        }, this.config.controlLockDuration);
+        if (this.config.controlLockDuration > 0) {
+            this.lockControls = true;
+            setTimeout(() => {
+                this.lockControls = false;
+            }, this.config.controlLockDuration);
+        }
 
         let oldIndex = this.selectedIndex;
         let oldRot = this.getRotation(oldIndex);
@@ -56,7 +60,8 @@ class Wheel {
         if (newRot - oldRot > Math.PI) oldRot += Math.PI * 2;
         else if (oldRot - newRot > Math.PI) newRot += Math.PI * 2;
 
-        anime({
+        if (this.anim) this.anim.pause();
+        this.anim = anime({
             targets: this.img,
             rotate: [360 - degrees(oldRot), 360 - degrees(newRot)],
         });
@@ -82,10 +87,10 @@ class Projector {
         this.ctx = document.getElementById("projector").getContext("2d");
         this.container = document.getElementById("content-container");
 
-        // useful stuff
-        this.radius = 0;
+        // Animation stuff
         this.rotation = 0;
         this.progress = 100;
+        this.anim = null;
 
         // create sections
         this.sections = [];
@@ -104,8 +109,8 @@ class Projector {
         }
     }
 
-    requestDraw() {
-        window.requestAnimationFrame(() => this.draw());
+    requestDraw(direction = 1) {
+        window.requestAnimationFrame(() => this.draw(direction));
     }
 
     draw(direction = 1) {
@@ -164,12 +169,14 @@ class Projector {
     animateRotation(oldIndex, newIndex, oldRot, newRot) {
         const direction = newRot > oldRot ? 1 : -1;
 
-        anime({
+        if (this.anim) this.anim.pause();
+        this.anim = anime({
             targets: this,
             rotation: [oldRot, newRot],
             progress: [0, 100],
             duration: 1300,
             update: () => this.draw(direction),
+            // easing: "linear",
         });
 
         this.sections[oldIndex].animateOut(direction);
@@ -193,11 +200,9 @@ class ContentSection {
     }
 
     animateIn(direction) {
-        if (this.animDir) {
-            this.anim = null;
-        }
+        if (this.anim) this.anim.pause();
+
         if (this.content) {
-            this.animDir = "in";
             this.content.classList.remove("d-none");
             this.anim = anime({
                 targets: this.content,
@@ -209,21 +214,15 @@ class ContentSection {
     }
 
     animateOut(direction) {
-        if (this.animDir) {
-            this.animDir = null;
-        }
+        if (this.anim) this.anim.pause();
+
         if (this.content) {
-            this.animDir = "out";
-            anime({
+            this.anim = anime({
                 targets: this.content,
                 translateX: [0, -1000 * direction],
                 opacity: [1, 0],
                 duration: 1300,
-                complete: () => {
-                    if (this.animDir === "out") {
-                        this.content.classList.add("d-none");
-                    }
-                },
+                complete: () => this.content.classList.add("d-none"),
             });
         }
     }
@@ -284,9 +283,8 @@ document.addEventListener(
             controlLockDuration: 500,
         });
 
-        const projector = new Projector(wheel);
-
-        wheel.createAnimations();
+        new Projector(wheel);
+        wheel.createControls();
     },
     false
 );
