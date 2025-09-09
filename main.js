@@ -298,7 +298,7 @@ document.addEventListener(
 
             // Animation
             animEasing: "outElastic(1, 0.5)",
-            animEasing: "linear",
+            // animEasing: "linear",
             animWheelDuration: 1000,
             animProjectorDuration: 1300,
         });
