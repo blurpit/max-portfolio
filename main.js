@@ -146,9 +146,9 @@ class Projector {
             [left, right] = [right, left];
         }
 
-        this.ctx.fillStyle = this.wheel.config.sectionColors[left];
+        this.ctx.fillStyle = this.wheel.config.sectionColors[left] ?? "white";
         this.ctx.fillRect(0, 0, width / 2, height);
-        this.ctx.fillStyle = this.wheel.config.sectionColors[right];
+        this.ctx.fillStyle = this.wheel.config.sectionColors[right] ?? "white";
         this.ctx.fillRect(width / 2, 0, width / 2, height);
 
         // Draw slice
@@ -261,7 +261,7 @@ class ContentSection {
         let size = Math.max(width, height) * Math.sqrt(2) * 0.9;
 
         this.ctx.beginPath();
-        this.ctx.strokeStyle = this.wheel.config.sectionColors[this.i];
+        this.ctx.strokeStyle = this.wheel.config.sectionColors[this.i] ?? "white";
         this.ctx.lineWidth = size;
         this.ctx.arc(width / 2, height + size / 2, size, startAngle, endAngle);
         this.ctx.stroke();
