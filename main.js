@@ -20,7 +20,7 @@ class Wheel {
         document.onclick = (e) => {
             if (this.lockControls) return;
 
-            let content = document.getElementById("content-" + this.selectedIndex);
+            const content = document.getElementById("content-" + this.selectedIndex);
             if (!content || !content.contains(e.target)) {
                 let delta = e.x < window.innerWidth / 2 ? -1 : 1;
                 this.rotateSections(delta);
@@ -29,7 +29,7 @@ class Wheel {
         document.onwheel = (e) => {
             if (this.lockControls) return;
 
-            let content = document.getElementById("content-" + this.selectedIndex);
+            const content = document.getElementById("content-" + this.selectedIndex);
             if (!content || !content.contains(e.target)) {
                 if (e.deltaY !== 0) {
                     let delta = e.deltaY > 0 ? 1 : -1;
@@ -57,7 +57,7 @@ class Wheel {
 
         const numSections = this.config.numSections;
 
-        let oldIndex = this.selectedIndex;
+        const oldIndex = this.selectedIndex;
         this.selectedIndex = (this.selectedIndex + direction + numSections) % numSections;
         let oldRot = this.getRotation(oldIndex);
         let newRot = this.getRotation(this.selectedIndex);
@@ -95,6 +95,9 @@ class Projector {
         // create sections
         this.sections = [];
         this.createSections();
+
+        this.canvasWidth = 0;
+        this.canvasHeight = 0;
 
         window.onresize = () => {
             this.resizeCanvas();
@@ -160,8 +163,11 @@ class Projector {
     }
 
     resizeCanvas() {
-        this.ctx.canvas.width = window.innerWidth;
-        this.ctx.canvas.height = window.innerHeight;
+        this.canvasWidth = window.innerWidth;
+        this.canvasHeight = window.innerHeight;
+
+        this.ctx.canvas.width = this.canvasWidth;
+        this.ctx.canvas.height = this.canvasHeight;
 
         this.requestDraw();
     }
@@ -170,7 +176,7 @@ class Projector {
         const index = this.wheel.selectedIndex;
         const numSections = this.wheel.config.numSections;
         const angularWidth = this.wheel.config.projectorAngularSectionWidth;
-        let startRot = direction == 1 ? angularWidth : -angularWidth;
+        const startRot = direction == 1 ? angularWidth : -angularWidth;
 
         if (this.anim) this.anim.cancel();
         this.anim = animate(this, {
@@ -181,9 +187,13 @@ class Projector {
             ease: this.wheel.config.animEasing,
         });
 
-        let oldIndex = (index - direction + numSections) % numSections;
+        const oldIndex = (index - direction + numSections) % numSections;
         this.sections[oldIndex].animateOut(direction);
         this.sections[index].animateIn(direction);
+    }
+
+    getRadius() {
+        return Math.max(this.canvasHeight, this.canvasWidth) * Math.sqrt(2) * 0.9;
     }
 }
 
@@ -248,22 +258,22 @@ class ContentSection {
         const numSections = this.wheel.config.numSections;
         const angularWidth = this.wheel.config.projectorAngularSectionWidth;
 
-        let forward = (this.i - this.wheel.selectedIndex + numSections) % numSections;
-        let backward = (this.wheel.selectedIndex - this.i + numSections) % numSections;
-        let indexDiff = forward <= backward ? forward : -backward;
+        const forward = (this.i - this.wheel.selectedIndex + numSections) % numSections;
+        const backward = (this.wheel.selectedIndex - this.i + numSections) % numSections;
+        const indexDiff = forward <= backward ? forward : -backward;
 
-        let startAngle =
+        const startAngle =
             this.proj.rotation + angularWidth * indexDiff - angularWidth / 2 - Math.PI / 2;
-        let endAngle = startAngle + angularWidth;
+        const endAngle = startAngle + angularWidth;
 
-        let width = this.ctx.canvas.width;
-        let height = this.ctx.canvas.height;
-        let size = Math.max(width, height) * Math.sqrt(2) * 0.9;
+        const width = this.proj.canvasWidth;
+        const height = this.proj.canvasHeight;
+        const radius = this.proj.getRadius();
 
         this.ctx.beginPath();
         this.ctx.strokeStyle = this.wheel.config.sectionColors[this.i] ?? "white";
-        this.ctx.lineWidth = size;
-        this.ctx.arc(width / 2, height + size / 2, size, startAngle, endAngle);
+        this.ctx.lineWidth = radius;
+        this.ctx.arc(width / 2, height + radius / 2, radius, startAngle, endAngle);
         this.ctx.stroke();
     }
 }
