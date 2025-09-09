@@ -98,6 +98,7 @@ hr {
 }
 #content-container img {
     border-radius: 10px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
 }
 
 .figure-caption {
@@ -139,6 +140,8 @@ hr {
     width: 600px;
     left: calc(50% - 300px);
     top: 0;
+    box-shadow: none;
+    filter: drop-shadow(2px 2px 10px rgba(0, 0, 0, 0.2));
     z-index: -1;
 }
 #content-1 {
