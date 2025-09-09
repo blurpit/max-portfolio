@@ -208,10 +208,17 @@ class ContentSection {
         if (this.content) {
             this.content.classList.remove("d-none");
             this.anim = animate(this.content, {
-                translateX: [1000 * direction, 0],
-                opacity: [0, 1],
+                translateX: {
+                    from: 1000 * direction,
+                    to: 0,
+                    ease: this.wheel.config.animEasing,
+                },
+                opacity: {
+                    from: 0,
+                    to: 1,
+                    ease: this.wheel.config.animOpacityInEasing,
+                },
                 duration: this.wheel.config.animProjectorDuration,
-                ease: this.wheel.config.animEasing,
             });
         }
     }
@@ -221,10 +228,17 @@ class ContentSection {
 
         if (this.content) {
             this.anim = animate(this.content, {
-                translateX: [0, -1000 * direction],
-                opacity: [1, 0],
+                translateX: {
+                    from: 0,
+                    to: -1000 * direction,
+                    ease: this.wheel.config.animEasing,
+                },
+                opacity: {
+                    from: 1,
+                    to: 0,
+                    ease: this.wheel.config.animOpacityOutEasing,
+                },
                 duration: this.wheel.config.animProjectorDuration,
-                ease: this.wheel.config.animEasing,
                 onComplete: () => this.content.classList.add("d-none"),
             });
         }
@@ -298,7 +312,8 @@ document.addEventListener(
 
             // Animation
             animEasing: "outElastic(1, 0.5)",
-            // animEasing: "linear",
+            animOpacityInEasing: "out(8)",
+            animOpacityOutEasing: "out(15)",
             animWheelDuration: 1000,
             animProjectorDuration: 1300,
         });
