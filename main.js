@@ -23,7 +23,7 @@ class Wheel {
             let content = document.getElementById("content-" + this.selectedIndex);
             if (!content || !content.contains(e.target)) {
                 let delta = e.x < window.innerWidth / 2 ? -1 : 1;
-                this.rotateSectionsBy(delta);
+                this.rotateSections(delta);
             }
         };
         document.onwheel = (e) => {
@@ -34,19 +34,19 @@ class Wheel {
                 if (e.deltaY !== 0) {
                     let delta = e.deltaY > 0 ? 1 : -1;
                     if (this.config.invertScroll) delta = -delta;
-                    this.rotateSectionsBy(delta);
+                    this.rotateSections(delta);
                 }
             }
         };
         document.onkeydown = (e) => {
             if (this.lockControls) return;
 
-            if (e.key === "ArrowLeft") this.rotateSectionsBy(-1);
-            else if (e.key === "ArrowRight") this.rotateSectionsBy(1);
+            if (e.key === "ArrowLeft") this.rotateSections(-1);
+            else if (e.key === "ArrowRight") this.rotateSections(1);
         };
     }
 
-    rotateToSection(index) {
+    rotateSections(direction) {
         // Prevent fast rotations
         if (this.config.controlLockDuration > 0) {
             this.lockControls = true;
@@ -55,10 +55,12 @@ class Wheel {
             }, this.config.controlLockDuration);
         }
 
+        const numSections = this.config.numSections;
+
         let oldIndex = this.selectedIndex;
+        this.selectedIndex = (this.selectedIndex + direction + numSections) % numSections;
         let oldRot = this.getRotation(oldIndex);
-        let newRot = this.getRotation(index);
-        this.selectedIndex = index;
+        let newRot = this.getRotation(this.selectedIndex);
 
         // make sure it rotates in the closest direction
         if (newRot - oldRot > Math.PI) oldRot += Math.PI * 2;
@@ -70,14 +72,7 @@ class Wheel {
             duration: this.config.animWheelDuration,
             ease: this.config.animEasing,
         });
-        this.projector.animateRotation(oldIndex, index, oldRot, newRot);
-    }
-
-    rotateSectionsBy(delta) {
-        let index = (this.selectedIndex + delta) % this.config.numSections;
-        if (index < 0) index += this.config.numSections;
-
-        this.rotateToSection(index);
+        this.projector.animateRotation(direction);
     }
 
     getRotation(index) {
@@ -93,7 +88,7 @@ class Projector {
         this.container = document.getElementById("content-container");
 
         // Animation stuff
-        this.rotation = this.wheel.getRotation(this.wheel.selectedIndex);
+        this.rotation = 0;
         this.progress = 100;
         this.anim = null;
 
@@ -171,21 +166,24 @@ class Projector {
         this.requestDraw();
     }
 
-    animateRotation(oldIndex, newIndex, oldRot, newRot) {
-        const direction = newRot > oldRot ? 1 : -1;
+    animateRotation(direction) {
+        const index = this.wheel.selectedIndex;
+        const numSections = this.wheel.config.numSections;
+        const angularWidth = this.wheel.config.projectorAngularSectionWidth;
+        let startRot = direction == 1 ? angularWidth : -angularWidth;
 
         if (this.anim) this.anim.cancel();
         this.anim = animate(this, {
-            rotation: [oldRot, newRot],
+            rotation: [startRot, 0],
             progress: [0, 100],
             duration: this.wheel.config.animProjectorDuration,
             onUpdate: () => this.draw(direction),
             ease: this.wheel.config.animEasing,
-            // ease: "linear",
         });
 
+        let oldIndex = (index - direction + numSections) % numSections;
         this.sections[oldIndex].animateOut(direction);
-        this.sections[newIndex].animateIn(direction);
+        this.sections[index].animateIn(direction);
     }
 }
 
@@ -233,9 +231,16 @@ class ContentSection {
     }
 
     draw() {
-        let rot = this.wheel.getRotation(this.i) - this.proj.rotation;
-        let startAngle = rot - this.wheel.config.projectorAngularSectionWidth / 2 - Math.PI / 2;
-        let endAngle = startAngle + this.wheel.config.projectorAngularSectionWidth;
+        const numSections = this.wheel.config.numSections;
+        const angularWidth = this.wheel.config.projectorAngularSectionWidth;
+
+        let forward = (this.i - this.wheel.selectedIndex + numSections) % numSections;
+        let backward = (this.wheel.selectedIndex - this.i + numSections) % numSections;
+        let indexDiff = forward <= backward ? forward : -backward;
+
+        let startAngle =
+            this.proj.rotation + angularWidth * indexDiff - angularWidth / 2 - Math.PI / 2;
+        let endAngle = startAngle + angularWidth;
 
         let width = this.ctx.canvas.width;
         let height = this.ctx.canvas.height;
@@ -293,6 +298,7 @@ document.addEventListener(
 
             // Animation
             animEasing: "outElastic(1, 0.5)",
+            animEasing: "linear",
             animWheelDuration: 1000,
             animProjectorDuration: 1300,
         });
