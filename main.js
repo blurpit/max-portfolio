@@ -317,10 +317,10 @@ document.addEventListener(
                 "#FF8C32",
                 "#FFDA32",
                 "#71FF83",
+                "#1DD6F6",
                 "#6379FF",
                 "#9663FF",
                 "#FF63E9",
-                "#FF6380",
             ],
             projectorAngularSectionWidth: (2 * Math.PI) / 7,
 
