@@ -49,7 +49,7 @@ hr {
 #wheel {
     position: absolute;
     bottom: -345px;
-    left: calc(50% - 270px);
+    left: calc(50% - 280px);
 
     pointer-events: none;
 }
