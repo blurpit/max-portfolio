@@ -48,7 +48,7 @@ hr {
 
 #wheel {
     position: absolute;
-    bottom: -345px;
+    bottom: -370px;
     left: calc(50% - 280px);
 
     pointer-events: none;
@@ -88,9 +88,9 @@ hr {
 
 #content-container > .container-fluid {
     position: absolute;
-    width: 60%;
-    left: 20%;
-    max-height: calc(100% - 225px);
+    width: 70%;
+    left: 15%;
+    max-height: calc(100% - 160px);
     overflow-y: auto;
     overflow-x: hidden;
 
