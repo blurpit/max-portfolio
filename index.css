@@ -129,7 +129,7 @@ img.enlarge:active {
 #enlarge-img {
     pointer-events: none;
     border-radius: 12px;
-    max-height: 90vh;
+    max-height: 85vh;
     width: auto;
     margin: auto;
     display: block;
