@@ -70,7 +70,7 @@ hr {
     left: 20px;
     width: calc(100% - 40px);
     height: calc(100% - 60px);
-    box-shadow: 0 0 150px rgba(0, 0, 0, 0.5) inset;
+    box-shadow: 0 0 150px rgba(0, 0, 0, 0.7) inset;
     border-radius: 20px;
     pointer-events: none;
     z-index: -9;
@@ -151,6 +151,11 @@ img.enlarge:active {
 
 .yt-video {
     aspect-ratio: 560 / 315;
+    border-radius: 10px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+}
+.yt-short {
+    aspect-ratio: 417.6 / 742.4;
     border-radius: 10px;
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
 }
