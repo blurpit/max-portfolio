@@ -106,6 +106,35 @@ hr {
     opacity: 0.6;
 }
 
+img.enlarge {
+    cursor: pointer;
+    transition: transform 0.1s ease-out, filter 0.1s ease-out;
+}
+img.enlarge:hover {
+    transform: scale(1.05);
+}
+img.enlarge:active {
+    filter: brightness(0.8);
+}
+
+#enlarge-modal .modal-dialog {
+    pointer-events: none;
+}
+#enlarge-modal .modal-content {
+    pointer-events: none;
+    background: transparent;
+    border: none;
+    padding: 0;
+}
+#enlarge-img {
+    pointer-events: none;
+    border-radius: 12px;
+    max-height: 90vh;
+    width: auto;
+    margin: auto;
+    display: block;
+}
+
 .white,
 .white .figure-caption {
     color: white;

@@ -305,6 +305,13 @@ function submitPassword(e) {
     }
 }
 
+function enlargeImg(modal, imgElem) {
+    const src = imgElem.getAttribute("src");
+    const modalImg = document.getElementById("enlarge-img");
+    modalImg.setAttribute("src", src);
+    modal.show();
+}
+
 document.addEventListener(
     "DOMContentLoaded",
     function () {
@@ -350,6 +357,21 @@ document.addEventListener(
             btn.addEventListener("click", () => {
                 wheel.rotateSections(1);
             });
+        });
+
+        // Enlarge images
+        const enlargeModalElem = document.getElementById("enlarge-modal");
+        const enlargeModal = new bootstrap.Modal(enlargeModalElem);
+        document.querySelectorAll("img.enlarge").forEach((imgElem) => {
+            imgElem.addEventListener("click", () => {
+                enlargeImg(enlargeModal, imgElem);
+            });
+        });
+        enlargeModalElem.addEventListener("show.bs.modal", () => {
+            wheel.lockControls = true;
+        });
+        enlargeModalElem.addEventListener("hidden.bs.modal", () => {
+            wheel.lockControls = false;
         });
     },
     false

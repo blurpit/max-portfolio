@@ -8,12 +8,19 @@
         <script>
             const { animate } = anime;
         </script>
-        <script src="main.js?v=2"></script>
         <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
             rel="stylesheet"
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+            integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+            crossorigin="anonymous"
         />
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+            crossorigin="anonymous"
+        ></script>
         <link rel="stylesheet" href="index.css" />
+        <script src="main.js?v=2"></script>
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     </head>
     <body>
@@ -70,7 +77,7 @@
                         <div class="col mx-auto">
                             <img
                                 src="img/Suitcase-6.png"
-                                class="d-block mx-auto mb-2"
+                                class="d-block mx-auto mb-2 enlarge"
                                 width="70%"
                                 style="max-width: 200px"
                             />
@@ -84,7 +91,7 @@
                         <div class="col">
                             <img
                                 src="img/Suitcase-2.png"
-                                class="d-block mx-auto mb-2"
+                                class="d-block mx-auto mb-2 enlarge"
                                 width="100%"
                             />
                             <p>
@@ -97,7 +104,7 @@
                         <div class="col">
                             <img
                                 src="img/Suitcase-M.png"
-                                class="d-block mx-auto mb-2"
+                                class="d-block mx-auto mb-2 enlarge"
                                 width="100%"
                             />
                             <p>
@@ -108,7 +115,7 @@
                         <div class="col">
                             <img
                                 src="img/Suitcase-8.gif"
-                                class="d-block mx-auto mb-2"
+                                class="d-block mx-auto mb-2 enlarge"
                                 width="100%"
                             />
                             <p>
@@ -556,5 +563,13 @@
         </div>
 
         <img id="wheel" src="img/wheel.png" />
+
+        <div class="modal fade" id="enlarge-modal">
+            <div class="modal-dialog modal-dialog-centered modal-xl">
+                <div class="modal-content">
+                    <img id="enlarge-img" class="img-fluid" width="100%" />
+                </div>
+            </div>
+        </div>
     </body>
 </html>
